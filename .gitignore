@@ -11,3 +11,6 @@ frontend/.angular/
 # Environment files
 *.env
 appsettings.Development.json
+
+# Visual Studio local cache
+.vs/
