@@ -1,0 +1,48 @@
+<div class="register-page">
+  <div class="register-card">
+    <img
+      src="Images/MzansiLogo.png"
+      alt="MzansiBuilds Logo"
+      class="logo"
+    />
+
+    <h1>Create Your Account</h1>
+    <p class="subtitle">
+      Join developers building in public, sharing milestones, and collaborating.
+    </p>
+
+    <div class="form-group">
+      <label>Full Name</label>
+      <input
+        [(ngModel)]="fullName"
+        type="text"
+        placeholder="Enter your full name"
+      />
+    </div>
+
+    <div class="form-group">
+      <label>Email Address</label>
+      <input
+        [(ngModel)]="email"
+        type="email"
+        placeholder="Enter your email"
+      />
+    </div>
+
+    <div class="form-group">
+      <label>Password</label>
+      <input
+        [(ngModel)]="password"
+        type="password"
+        placeholder="Create a secure password"
+      />
+    </div>
+
+    <button (click)="register()">Create Account</button>
+
+    <p class="login-link">
+      Already have an account?
+      <a routerLink="/">Login</a>
+    </p>
+  </div>
+</div>
