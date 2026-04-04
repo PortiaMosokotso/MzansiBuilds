@@ -1,1 +1,57 @@
-<p>dashboard works!</p>
+<div class="dashboard-layout">
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="logo-section">
+      <img src="Images/MzansiLogo.png" alt="MzansiBuilds" />
+      <h2>MzansiBuilds</h2>
+    </div>
+
+    <nav>
+      <a class="active">Dashboard</a>
+      <a>Live Feed</a>
+      <a>My Projects</a>
+      <a>Collaboration</a>
+      <a>Celebration Wall</a>
+      <a>Logout</a>
+    </nav>
+  </aside>
+
+  <!-- Main dashboard -->
+  <main class="dashboard-content">
+  <div class="header">
+    <h1>Welcome back 👋</h1>
+    <button (click)="goToCreateProject()">Create Project</button>
+  </div>
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <h3>12</h3>
+        <p>Projects in progress</p>
+      </div>
+      <div class="stat-card">
+        <h3>5</h3>
+        <p>Milestones achieved today</p>
+      </div>
+      <div class="stat-card">
+        <h3>3</h3>
+        <p>Collaboration requests</p>
+      </div>
+    </div>
+
+    <section class="feed-section">
+      <h2>Live Feed</h2>
+
+      <div class="feed-card">
+        <h3>API Authentication Module</h3>
+        <p>JWT authentication completed and frontend integration started.</p>
+        <span>Stage: In Progress</span>
+      </div>
+
+      <div class="feed-card">
+        <h3>Frontend Dashboard UI</h3>
+        <p>Sidebar layout completed and project feed cards are next.</p>
+        <span>Stage: Planning</span>
+      </div>
+    </section>
+  </main>
+</div>

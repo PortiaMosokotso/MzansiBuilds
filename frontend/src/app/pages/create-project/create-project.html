@@ -1,1 +1,64 @@
-<p>create-project works!</p>
+<div class="create-project-page">
+  <div class="project-card">
+    <div class="header">
+      <img
+        src="Images/MzansiLogo.png"
+        alt="MzansiBuilds Logo"
+        class="logo"
+      />
+      <div>
+        <h1>Create New Project</h1>
+        <p>
+          Share what you're building, request support, and track milestones publicly.
+        </p>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <label>Project Title</label>
+      <input
+        [(ngModel)]="title"
+        type="text"
+        placeholder="Enter project title"
+      />
+    </div>
+
+    <div class="form-row">
+      <label>Description</label>
+      <textarea
+        [(ngModel)]="description"
+        placeholder="Describe what you're building"
+      ></textarea>
+    </div>
+
+    <div class="form-row">
+      <label>Project Stage</label>
+      <select [(ngModel)]="stage" (ngModelChange)="stage = +$event">
+  <option [value]="0">Planning</option>
+  <option [value]="1">In Progress</option>
+  <option [value]="2">Testing</option>
+  <option [value]="3">Completed</option>
+</select>
+    </div>
+
+    <div class="form-row">
+      <label>Support Required</label>
+      <div class="checkbox-box">
+        <input type="checkbox" [(ngModel)]="supportRequired" />
+        <span>Yes, I need collaboration/support</span>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <label>Support Details</label>
+      <textarea
+        [(ngModel)]="supportDetails"
+        placeholder="Explain the support needed"
+      ></textarea>
+    </div>
+
+    <div class="button-row">
+      <button (click)="createProject()">Create Project</button>
+    </div>
+  </div>
+</div>

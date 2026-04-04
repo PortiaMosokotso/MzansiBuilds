@@ -1,0 +1,141 @@
+.create-project-page {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(
+    rgba(255, 255, 255, 0.7),
+    rgba(200, 250, 231, 0.8)
+  );
+  padding: 30px;
+  font-family: Arial, sans-serif;
+}
+
+.project-card {
+  width: 100%;
+  max-width: 950px;
+  background: rgba(17, 24, 39, 0.96);
+  border-radius: 18px;
+  padding: 40px;
+  color: white;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.18);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-bottom: 35px;
+}
+
+.logo {
+  width: 70px;
+  height: 70px;
+}
+
+.header h1 {
+  margin: 0;
+  font-size: 28px;
+}
+
+.header p {
+  margin: 8px 0 0;
+  color: #d1d5db;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 20px;
+  align-items: start;
+  margin-bottom: 22px;
+}
+
+.form-row label {
+  font-weight: 600;
+  color: #d1d5db;
+  padding-top: 12px;
+}
+
+input,
+textarea,
+select {
+  width: 100%;
+  padding: 14px;
+  border-radius: 10px;
+  border: 1px solid #374151;
+  background: #1f2937;
+  color: white;
+  font-size: 14px;
+  box-sizing: border-box;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #9ca3af;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  background: white;
+  color: black;
+  border-color: #16a34a;
+  box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.2);
+}
+
+select option {
+  color: black;
+}
+
+textarea {
+  min-height: 110px;
+  resize: vertical;
+}
+
+.checkbox-box {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #1f2937;
+  color: white;
+  padding: 14px;
+  border-radius: 10px;
+  border: 1px solid #374151;
+  transition: all 0.3s ease;
+}
+
+.checkbox-box:hover {
+  border-color: #16a34a;
+}
+
+.checkbox-box input {
+  width: auto;
+  accent-color: #16a34a;
+}
+
+.button-row {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 30px;
+}
+
+button {
+  background: #16a34a;
+  color: white;
+  padding: 14px 28px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.3s ease;
+}
+
+button:hover {
+  background: #15803d;
+  transform: translateY(-1px);
+}
