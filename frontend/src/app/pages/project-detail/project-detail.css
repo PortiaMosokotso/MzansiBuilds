@@ -1,0 +1,380 @@
+.detail-page {
+  padding: 28px 32px;
+  font-family: sans-serif;
+}
+
+.state-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 20px;
+  gap: 12px;
+  color: #555;
+  font-size: 14px;
+}
+
+.spinner {
+  width: 28px;
+  height: 28px;
+  border: 2px solid #222;
+  border-top-color: #22c55e;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.error-text { color: #e24b4a; }
+
+.detail-container {
+  max-width: 780px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: #555;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  padding: 0;
+  transition: color 0.15s;
+  width: fit-content;
+}
+
+.back-btn:hover { color: #22c55e; }
+
+/* Project header */
+.project-header {
+  background: #161616;
+  border: 0.5px solid #2a2a2a;
+  border-radius: 14px;
+  padding: 24px;
+}
+
+.header-top {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+}
+
+.project-header h1 {
+  font-size: 22px;
+  font-weight: 500;
+  color: #fff;
+  margin: 0;
+}
+
+.stage-badge {
+  font-size: 11px;
+  font-weight: 500;
+  padding: 3px 10px;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+
+.planning  { background: #1e2a3a; color: #60a5fa; }
+.progress  { background: #1a3a1e; color: #22c55e; }
+.testing   { background: #2a2210; color: #f59e0b; }
+.completed { background: #0f2e18; color: #22c55e;
+             border: 0.5px solid #22c55e44; }
+
+.project-description {
+  font-size: 14px;
+  color: #888;
+  margin: 0 0 16px;
+  line-height: 1.6;
+}
+
+.project-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.avatar {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #1a3a1e;
+  color: #22c55e;
+  font-size: 11px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.developer-name { font-size: 13px; color: #666; }
+.meta-dot       { color: #333; font-size: 13px; }
+.date           { font-size: 12px; color: #444; }
+
+/* Support banner */
+.support-banner {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  background: #1a1500;
+  border: 0.5px solid #f59e0b33;
+  border-radius: 10px;
+  padding: 14px 18px;
+  color: #f59e0b;
+  font-size: 13px;
+}
+
+.support-banner strong { display: block; margin-bottom: 4px; }
+.support-banner p      { margin: 0; color: #888; font-size: 12px; }
+.support-banner svg    { margin-top: 2px; flex-shrink: 0; }
+
+/* Milestones section */
+.milestones-section {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.section-header h2 {
+  font-size: 18px;
+  font-weight: 500;
+  color: #fff;
+  margin: 0 0 4px;
+}
+
+.section-header p {
+  font-size: 13px;
+  color: #555;
+  margin: 0;
+}
+
+/* Add milestone form */
+.milestone-form {
+  background: #161616;
+  border: 0.5px solid #22c55e33;
+  border-radius: 12px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.milestone-form h3 {
+  font-size: 14px;
+  font-weight: 500;
+  color: #fff;
+  margin: 0;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.field-label {
+  font-size: 11px;
+  font-weight: 500;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.field-input,
+.field-textarea {
+  background: #0d0d0d;
+  border: 0.5px solid #2e2e2e;
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 13px;
+  color: #fff;
+  font-family: inherit;
+  outline: none;
+  width: 100%;
+  box-sizing: border-box;
+  transition: border-color 0.15s;
+}
+
+.field-input:focus,
+.field-textarea:focus { border-color: #22c55e; }
+
+.field-textarea { resize: vertical; line-height: 1.6; }
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+/* Buttons */
+.btn-primary,
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 18px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  font-family: inherit;
+  border: 0.5px solid;
+  transition: all 0.15s;
+}
+
+.btn-primary {
+  background: #22c55e;
+  color: #0a0a0a;
+  border-color: #22c55e;
+}
+
+.btn-primary:hover:not(:disabled) { background: #1aad50; }
+.btn-primary:disabled { opacity: 0.4; cursor: not-allowed; }
+
+.btn-secondary {
+  background: transparent;
+  color: #666;
+  border-color: #2a2a2a;
+}
+
+.btn-secondary:hover { background: #1a1a1a; color: #ccc; }
+
+.btn-spinner {
+  width: 12px;
+  height: 12px;
+  border: 2px solid #0a0a0a44;
+  border-top-color: #0a0a0a;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+/* Empty state */
+.empty-milestones {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 48px 20px;
+  gap: 8px;
+  color: #444;
+  font-size: 13px;
+  border: 0.5px dashed #222;
+  border-radius: 12px;
+}
+
+.empty-milestones p    { color: #555; font-size: 14px; margin: 0; }
+.empty-milestones span { color: #444; font-size: 12px; }
+
+/* Timeline */
+.timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.timeline-item {
+  display: flex;
+  gap: 16px;
+}
+
+.timeline-left {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-shrink: 0;
+  width: 20px;
+}
+
+.timeline-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #22c55e;
+  border: 2px solid #0d0d0d;
+  outline: 2px solid #22c55e44;
+  flex-shrink: 0;
+  margin-top: 4px;
+}
+
+.timeline-line {
+  width: 2px;
+  flex: 1;
+  background: #1e1e1e;
+  margin: 4px 0;
+  min-height: 24px;
+}
+
+.timeline-item:last-child .timeline-line {
+  display: none;
+}
+
+.timeline-content {
+  background: #161616;
+  border: 0.5px solid #2a2a2a;
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin-bottom: 12px;
+  flex: 1;
+}
+
+.milestone-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.milestone-title {
+  font-size: 14px;
+  font-weight: 500;
+  color: #fff;
+  margin: 0;
+}
+
+.milestone-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.milestone-date {
+  font-size: 11px;
+  color: #444;
+}
+
+.delete-milestone-btn {
+  background: transparent;
+  border: none;
+  color: #e24b4a;
+  cursor: pointer;
+  padding: 2px;
+  display: flex;
+  align-items: center;
+  opacity: 0.5;
+  transition: opacity 0.15s;
+}
+
+.delete-milestone-btn:hover { opacity: 1; }
+
+.milestone-description {
+  font-size: 13px;
+  color: #666;
+  margin: 0;
+  line-height: 1.6;
+}

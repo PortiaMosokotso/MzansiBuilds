@@ -9,7 +9,7 @@ import { Router, RouterModule } from '@angular/router';
   styleUrl: './dashboard.css',
 })
 export class Dashboard {
-  activeTab: 'dashboard' | 'projects' = 'dashboard'; // track active tab
+  activeTab: 'dashboard' | 'projects' = 'dashboard'; 
 
   constructor(private router: Router) {}
 

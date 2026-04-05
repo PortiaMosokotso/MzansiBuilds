@@ -1,63 +1,159 @@
 <div class="projects-page">
 
   <div class="page-header">
-    <div>
-      <h1>Developer Projects</h1>
-      <p>Explore what the community is building in public.</p>
+    <div class="header-left">
+      <h1>Projects Board</h1>
+      <p>Track and manage what the community is building.</p>
+    </div>
+    <div class="header-stats">
+      <div class="stat-pill">
+        <span class="stat-num">{{ totalProjects }}</span>
+        <span class="stat-label">Total</span>
+      </div>
+      <div class="stat-pill">
+        <span class="stat-num">{{ completedProjects }}</span>
+        <span class="stat-label">Completed</span>
+      </div>
+      <div class="stat-pill support">
+        <span class="stat-num">{{ needsSupport }}</span>
+        <span class="stat-label">Need Support</span>
+      </div>
     </div>
   </div>
 
   @if (loading) {
-    <div class="loading-wrap">
-      <p class="loading-text">Loading projects...</p>
+    <div class="state-wrap">
+      <div class="spinner"></div>
+      <p>Loading projects...</p>
     </div>
   }
 
   @if (!loading && error) {
-    <div class="error-wrap">
+    <div class="state-wrap">
       <p class="error-text">Failed to load projects. Please try again.</p>
     </div>
   }
 
   @if (!loading && !error && projects.length === 0) {
-    <div class="empty-wrap">
-      <p class="empty-text">No projects yet. Be the first to build in public!</p>
+    <div class="state-wrap">
+      <div class="empty-icon">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#333" stroke-width="1.5">
+          <rect x="3" y="3" width="18" height="18" rx="2"/>
+          <path d="M3 9h18M9 21V9"/>
+        </svg>
+      </div>
+      <p class="empty-title">No projects yet</p>
+      <p class="empty-sub">Be the first to build in public!</p>
     </div>
   }
 
   @if (!loading && !error && projects.length > 0) {
-    <div class="projects-grid">
-      @for (project of projects; track project.id) {
-        <div class="project-card">
+    <div class="kanban-board">
+      @for (stage of stages; track stage.key) {
+        <div class="kanban-column">
 
-          <div class="card-top">
-            <h2 class="project-title">{{ project.title }}</h2>
-            <span class="stage-badge" [ngClass]="getStageClass(project.stage)">
-              {{ getStageName(project.stage) }}
-            </span>
+          <div class="column-header" [ngClass]="stage.color + '-header'">
+            <div class="column-title-row">
+              <span class="column-dot" [ngClass]="stage.color + '-dot'"></span>
+              <span class="column-title">{{ stage.label }}</span>
+            </div>
+            <span class="column-count">{{ getProjectsByStage(stage.key).length }}</span>
           </div>
 
-          <p class="description">{{ project.description }}</p>
+          <div class="column-cards">
+            @if (getProjectsByStage(stage.key).length === 0) {
+              <div class="empty-column">
+                <p>No projects here</p>
+              </div>
+            }
 
-          <div class="developer">
-            Built by <strong>{{ project.developerName }}</strong>
-          </div>
+            @for (project of getProjectsByStage(stage.key); track project.id) {
+              <div class="project-card" [ngClass]="stage.color + '-card'">
 
-          @if (project.supportRequired) {
-            <div class="support-box">
-              <strong>Support Needed:</strong>
-              <p>{{ project.supportDetails }}</p>
-            </div>
-          }
+                <div class="card-top">
+                  <h3 class="project-title">{{ project.title }}</h3>
 
-          <div class="card-footer">
-            <span class="date">
-              {{ project.createdAt | date: 'dd MMM yyyy, HH:mm' }}
-            </span>
-            <div class="action-btns">
-              <button class="edit-btn">Edit</button>
-              <button class="delete-btn">Delete</button>
-            </div>
+                  <div class="stage-control">
+                    @if (editingStageId === project.id) {
+                      <select
+                        class="stage-select"
+                        [ngModel]="project.stage"
+                        (ngModelChange)="changeStage(project, $event)"
+                        (blur)="editingStageId = null">
+                        @for (s of stages; track s.key) {
+                          <option [value]="s.key">{{ s.label }}</option>
+                        }
+                      </select>
+                    } @else {
+                      <button
+                        class="stage-badge"
+                        [ngClass]="getStageClass(project.stage)"
+                        (click)="toggleStageEdit(project.id)"
+                        title="Click to change stage">
+                        {{ getStageName(project.stage) }}
+                        <svg width="10" height="10" viewBox="0 0 24 24" fill="none"
+                          stroke="currentColor" stroke-width="2.5" style="margin-left:4px">
+                          <path d="M6 9l6 6 6-6"/>
+                        </svg>
+                      </button>
+                    }
+                  </div>
+                </div>
+
+                <p class="description">{{ project.description }}</p>
+
+                <div class="developer-row">
+                  <div class="avatar">
+                    {{ project.developerName?.charAt(0)?.toUpperCase() || '?' }}
+                  </div>
+                  <span class="developer-name">{{ project.developerName }}</span>
+                </div>
+
+                @if (project.supportRequired) {
+                  <div class="support-tag">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none"
+                      stroke="currentColor" stroke-width="2">
+                      <circle cx="12" cy="12" r="10"/>
+                      <path d="M12 8v4M12 16h.01"/>
+                    </svg>
+                    Support needed
+                  </div>
+                }
+
+                <div class="card-footer">
+                  <span class="date">
+                    {{ project.createdAt | date: 'dd MMM yyyy' }}
+                  </span>
+                  <div class="action-btns">
+               <button
+    class="icon-btn edit-btn"
+    title="Edit project"
+    (click)="editProject(project.id)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+      stroke="currentColor" stroke-width="2">
+      <path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/>
+      <path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/>
+    </svg>
+  </button>
+
+  <!-- Delete -->
+  <button
+    class="icon-btn delete-btn"
+    title="Delete project"
+    (click)="deleteProject(project.id)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+      stroke="currentColor" stroke-width="2">
+      <polyline points="3 6 5 6 21 6"/>
+      <path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/>
+      <path d="M10 11v6M14 11v6"/>
+      <path d="M9 6V4a1 1 0 011-1h4a1 1 0 011 1v2"/>
+    </svg>
+  </button>
+                  </div>
+                </div>
+
+              </div>
+            }
           </div>
 
         </div>

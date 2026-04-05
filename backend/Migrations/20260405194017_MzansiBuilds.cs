@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace backend.Migrations
 {
     /// <inheritdoc />
-    public partial class MzansiMigration : Migration
+    public partial class MzansiBuilds : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -38,7 +38,6 @@ namespace backend.Migrations
                     Stage = table.Column<int>(type: "int", nullable: false),
                     SupportRequired = table.Column<bool>(type: "bit", nullable: false),
                     SupportDetails = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
-                    IsCompleted = table.Column<bool>(type: "bit", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UserId = table.Column<int>(type: "int", nullable: false)

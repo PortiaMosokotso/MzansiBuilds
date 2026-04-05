@@ -11,10 +11,10 @@ export class Project {
 
   private getHeaders() {
     const token = localStorage.getItem('token');
-
     return {
       headers: new HttpHeaders({
-        Authorization: `Bearer ${token}`,
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
       }),
     };
   }
@@ -37,6 +37,15 @@ export class Project {
   // UPDATE
   updateProject(id: number, data: any) {
     return this.http.put(`${this.baseUrl}/${id}`, data, this.getHeaders());
+  }
+
+  // UPDATE PROJECT STAGE
+  updateProjectStage(id: number, stage: number) {
+    return this.http.patch(
+      `${this.baseUrl}/${id}/stage`,
+      JSON.stringify(stage),
+      this.getHeaders()
+    );
   }
 
   // DELETE

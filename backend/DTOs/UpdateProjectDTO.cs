@@ -9,6 +9,5 @@ namespace backend.DTOs
         public ProjectStage Stage { get; set; }
         public bool SupportRequired { get; set; }
         public string? SupportDetails { get; set; }
-        public bool IsCompleted { get; set; }
     }
 }

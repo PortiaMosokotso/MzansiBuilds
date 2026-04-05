@@ -8,7 +8,6 @@
         public int Stage { get; set; }
         public bool SupportRequired { get; set; }
         public string? SupportDetails { get; set; }
-        public bool IsCompleted { get; set; }
         public DateTime CreatedAt { get; set; }
         public string DeveloperName { get; set; } = string.Empty;
     }

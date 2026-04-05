@@ -56,7 +56,6 @@ namespace backend.Controllers
                     Stage = (int)p.Stage,
                     SupportRequired = p.SupportRequired,
                     SupportDetails = p.SupportDetails,
-                    IsCompleted = p.IsCompleted,
                     CreatedAt = p.CreatedAt,
                     DeveloperName = p.User.FullName
                 })
@@ -80,7 +79,6 @@ namespace backend.Controllers
                     Stage = (int)p.Stage,
                     SupportRequired = p.SupportRequired,
                     SupportDetails = p.SupportDetails,
-                    IsCompleted = p.IsCompleted,
                     CreatedAt = p.CreatedAt,
                     DeveloperName = p.User.FullName
                 })
@@ -111,12 +109,36 @@ namespace backend.Controllers
             project.Stage = dto.Stage;
             project.SupportRequired = dto.SupportRequired;
             project.SupportDetails = dto.SupportDetails;
-            project.IsCompleted = dto.IsCompleted;
             project.UpdatedAt = DateTime.UtcNow;
 
             await _context.SaveChangesAsync();
 
             return Ok(project);
+        }
+        // UPDATE PROJECT STAGE
+        [HttpPatch("{id}/stage")]
+        public async Task<IActionResult> UpdateProjectStage(int id, [FromBody] int stage)
+        {
+            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+
+            var project = await _context.Projects
+                .FirstOrDefaultAsync(p => p.Id == id);
+
+            if (project == null)
+                return NotFound("Project not found.");
+
+            if (project.UserId != userId)
+                return Forbid("You can only edit your own projects.");
+
+            if (!Enum.IsDefined(typeof(ProjectStage), stage))
+                return BadRequest("Invalid stage value.");
+
+            project.Stage = (ProjectStage)stage;
+            project.UpdatedAt = DateTime.UtcNow;
+
+            await _context.SaveChangesAsync();
+
+            return Ok(new { message = "Stage updated.", stage = project.Stage });
         }
 
         // DELETE PROJECT
@@ -137,59 +159,6 @@ namespace backend.Controllers
             await _context.SaveChangesAsync();
 
             return Ok(new { message = "Project deleted successfully." });
-        }
-
-
-
-
-
-
-
-
-
-
-
-
-        [HttpGet("feed")]
-        public async Task<IActionResult> GetLiveFeed()
-        {
-            var projects = await _context.Projects
-                .Include(x => x.User)
-                .Include(x => x.Comments)
-                .Include(x => x.Milestones)
-                .OrderByDescending(x => x.UpdatedAt)
-                .ToListAsync();
-
-            return Ok(projects);
-        }
-
-        [HttpPut("{id}/complete")]
-        public async Task<IActionResult> CompleteProject(int id)
-        {
-            var project = await _context.Projects.FindAsync(id);
-
-            if (project == null)
-                return NotFound();
-
-            project.IsCompleted = true;
-            project.Stage = ProjectStage.Completed;
-            project.UpdatedAt = DateTime.UtcNow;
-
-            await _context.SaveChangesAsync();
-
-            return Ok(project);
-        }
-
-        [HttpGet("celebration-wall")]
-        public async Task<IActionResult> CelebrationWall()
-        {
-            var completedProjects = await _context.Projects
-                .Include(x => x.User)
-                .Where(x => x.IsCompleted)
-                .OrderByDescending(x => x.UpdatedAt)
-                .ToListAsync();
-
-            return Ok(completedProjects);
         }
     }
 }
