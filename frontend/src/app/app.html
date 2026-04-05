@@ -1,2 +1,23 @@
+<div class="dashboard-layout">
+  <!-- Sidebar: only show if logged in -->
+  <aside class="sidebar" [hidden]="!isLoggedIn()">
+    <div class="logo-section">
+      <img src="Images/MzansiLogo.png" alt="MzansiBuilds" />
+      <h2>MzansiBuilds</h2>
+    </div>
 
-<router-outlet />
+    <nav>
+      <a routerLink="/dashboard" routerLinkActive="active">Dashboard</a>
+      <a routerLink="/projects" routerLinkActive="active">My Projects</a>
+      <a>Live Feed</a>
+      <a>Collaboration</a>
+      <a>Celebration Wall</a>
+      <a (click)="logout()">Logout</a>
+    </nav>
+  </aside>
+
+  <!-- Main content -->
+  <main class="dashboard-content">
+    <router-outlet></router-outlet>
+  </main>
+</div>

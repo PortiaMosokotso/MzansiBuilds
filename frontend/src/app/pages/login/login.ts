@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth';
@@ -10,7 +10,7 @@ import { AuthService } from '../../services/auth';
   templateUrl: './login.html',
   styleUrl: './login.css',
 })
-export class Login {
+export class Login implements OnInit {
   email = '';
   password = '';
 
@@ -19,12 +19,15 @@ export class Login {
     private router: Router
   ) {}
 
+  ngOnInit(): void {
+    localStorage.removeItem('token');
+  }
+
   login() {
     const payload = {
       email: this.email,
       password: this.password
     };
-
     this.authService.login(payload).subscribe({
       next: () => {
         this.router.navigate(['/dashboard']);

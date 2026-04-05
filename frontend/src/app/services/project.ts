@@ -9,13 +9,38 @@ export class Project {
 
   constructor(private http: HttpClient) {}
 
-  createProject(data: any) {
+  private getHeaders() {
     const token = localStorage.getItem('token');
 
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${token}`
-    });
+    return {
+      headers: new HttpHeaders({
+        Authorization: `Bearer ${token}`,
+      }),
+    };
+  }
 
-    return this.http.post(this.baseUrl, data, { headers });
+  // CREATE
+  createProject(data: any) {
+    return this.http.post(this.baseUrl, data, this.getHeaders());
+  }
+
+  // GET ALL
+  getAllProjects() {
+    return this.http.get(this.baseUrl, this.getHeaders());
+  }
+
+  // GET SINGLE
+  getProjectById(id: number) {
+    return this.http.get(`${this.baseUrl}/${id}`, this.getHeaders());
+  }
+
+  // UPDATE
+  updateProject(id: number, data: any) {
+    return this.http.put(`${this.baseUrl}/${id}`, data, this.getHeaders());
+  }
+
+  // DELETE
+  deleteProject(id: number) {
+    return this.http.delete(`${this.baseUrl}/${id}`, this.getHeaders());
   }
 }

@@ -1,0 +1,137 @@
+.projects-page {
+  padding: 32px;
+  color: #fff;
+  font-family: sans-serif;
+}
+
+.page-header {
+  margin-bottom: 32px;
+}
+
+.page-header h1 {
+  font-size: 26px;
+  font-weight: 500;
+  color: #fff;
+  margin: 0 0 6px;
+}
+
+.page-header p {
+  font-size: 14px;
+  color: #666;
+  margin: 0;
+}
+
+.loading-wrap,
+.error-wrap,
+.empty-wrap {
+  text-align: center;
+  padding: 60px 20px;
+}
+
+.loading-text { color: #666; font-size: 14px; }
+.error-text   { color: #e24b4a; font-size: 14px; }
+.empty-text   { color: #555; font-size: 14px; }
+
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.project-card {
+  background: #161616;
+  border: 0.5px solid #2a2a2a;
+  border-radius: 14px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.project-title {
+  font-size: 16px;
+  font-weight: 500;
+  color: #fff;
+  margin: 0;
+}
+
+.stage-badge {
+  font-size: 11px;
+  font-weight: 500;
+  padding: 3px 10px;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+
+.planning  { background: #1e2a3a; color: #60a5fa; }
+.progress  { background: #1a3a1e; color: #22c55e; }
+.testing   { background: #2a2210; color: #f59e0b; }
+.completed { background: #0f2e18; color: #22c55e; border: 0.5px solid #22c55e; }
+
+.description {
+  font-size: 13px;
+  color: #888;
+  margin: 0;
+  line-height: 1.6;
+}
+
+.developer {
+  font-size: 12px;
+  color: #555;
+}
+
+.developer strong { color: #22c55e; }
+
+.support-box {
+  background: #0f1a0f;
+  border: 0.5px solid #1a3a1e;
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 12px;
+  color: #aaa;
+}
+
+.support-box strong {
+  color: #22c55e;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.support-box p { margin: 0; color: #777; }
+
+.card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: auto;
+  padding-top: 12px;
+  border-top: 0.5px solid #222;
+}
+
+.date { font-size: 11px; color: #444; }
+
+.action-btns { display: flex; gap: 8px; }
+
+.edit-btn,
+.delete-btn {
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  border: 0.5px solid;
+  background: transparent;
+}
+
+.edit-btn   { border-color: #22c55e; color: #22c55e; }
+.delete-btn { border-color: #e24b4a; color: #e24b4a; }
+
+.edit-btn:hover   { background: #0f2e18; }
+.delete-btn:hover { background: #2a0f0f; }

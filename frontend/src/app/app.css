@@ -1,0 +1,60 @@
+.dashboard-layout {
+  display: flex;
+  min-height: 100vh;
+  background: linear-gradient(
+    rgba(255, 255, 255, 0.7),
+    rgba(200, 250, 231, 0.8)
+  );
+  color: white;
+  font-family: Arial, sans-serif;
+}
+
+.sidebar {
+  width: 260px;
+  background: #111827;
+  border-right: 1px solid #1f2937;
+  padding: 25px;
+}
+
+.logo-section {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 40px;
+}
+
+.logo-section img {
+  width: 45px;
+  height: 45px;
+}
+
+.logo-section h2 {
+  font-size: 20px;
+  margin: 0;
+}
+
+nav {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+nav a {
+  padding: 12px 16px;
+  border-radius: 10px;
+  cursor: pointer;
+  color: #d1d5db;
+  text-decoration: none;
+  transition: 0.3s;
+}
+
+nav a:hover,
+nav a.active {
+  background: #16a34a; /* green highlight for active tab */
+  color: white;
+}
+
+.dashboard-content {
+  flex: 1;
+  padding: 35px;
+}

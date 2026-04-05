@@ -1,0 +1,68 @@
+<div class="projects-page">
+
+  <div class="page-header">
+    <div>
+      <h1>Developer Projects</h1>
+      <p>Explore what the community is building in public.</p>
+    </div>
+  </div>
+
+  @if (loading) {
+    <div class="loading-wrap">
+      <p class="loading-text">Loading projects...</p>
+    </div>
+  }
+
+  @if (!loading && error) {
+    <div class="error-wrap">
+      <p class="error-text">Failed to load projects. Please try again.</p>
+    </div>
+  }
+
+  @if (!loading && !error && projects.length === 0) {
+    <div class="empty-wrap">
+      <p class="empty-text">No projects yet. Be the first to build in public!</p>
+    </div>
+  }
+
+  @if (!loading && !error && projects.length > 0) {
+    <div class="projects-grid">
+      @for (project of projects; track project.id) {
+        <div class="project-card">
+
+          <div class="card-top">
+            <h2 class="project-title">{{ project.title }}</h2>
+            <span class="stage-badge" [ngClass]="getStageClass(project.stage)">
+              {{ getStageName(project.stage) }}
+            </span>
+          </div>
+
+          <p class="description">{{ project.description }}</p>
+
+          <div class="developer">
+            Built by <strong>{{ project.developerName }}</strong>
+          </div>
+
+          @if (project.supportRequired) {
+            <div class="support-box">
+              <strong>Support Needed:</strong>
+              <p>{{ project.supportDetails }}</p>
+            </div>
+          }
+
+          <div class="card-footer">
+            <span class="date">
+              {{ project.createdAt | date: 'dd MMM yyyy, HH:mm' }}
+            </span>
+            <div class="action-btns">
+              <button class="edit-btn">Edit</button>
+              <button class="delete-btn">Delete</button>
+            </div>
+          </div>
+
+        </div>
+      }
+    </div>
+  }
+
+</div>

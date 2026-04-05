@@ -19,13 +19,6 @@
   color: #111827;
   margin: 0;
 }
-/* Sidebar */
-.sidebar {
-  width: 260px;
-  background: #111827;
-  border-right: 1px solid #1f2937;
-  padding: 25px;
-}
 
 .logo-section {
   display: flex;
