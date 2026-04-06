@@ -23,8 +23,9 @@ export class AuthService {
     );
   }
 
-  logout() {
-    localStorage.clear();
+  logout(): void {
+    localStorage.removeItem('token');
+    localStorage.removeItem('fullName');
   }
 
   isLoggedIn(): boolean {

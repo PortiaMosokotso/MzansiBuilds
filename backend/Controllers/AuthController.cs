@@ -73,6 +73,14 @@ namespace backend.Controllers
             });
         }
 
+        [HttpPost("logout")]
+        public IActionResult Logout()
+        {
+            return Ok(new
+            {
+                message = "Logged out successfully"
+            });
+        }
         private string GenerateJwtToken(User user)
         {
             var claims = new[]

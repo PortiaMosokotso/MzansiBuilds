@@ -57,7 +57,8 @@ namespace backend.Controllers
                     SupportRequired = p.SupportRequired,
                     SupportDetails = p.SupportDetails,
                     CreatedAt = p.CreatedAt,
-                    DeveloperName = p.User.FullName
+                    DeveloperName = p.User.FullName,
+                    UserId = p.UserId
                 })
                 .ToListAsync();
 
@@ -80,7 +81,8 @@ namespace backend.Controllers
                     SupportRequired = p.SupportRequired,
                     SupportDetails = p.SupportDetails,
                     CreatedAt = p.CreatedAt,
-                    DeveloperName = p.User.FullName
+                    DeveloperName = p.User.FullName,
+                    UserId = p.UserId
                 })
                 .FirstOrDefaultAsync();
 
@@ -159,6 +161,31 @@ namespace backend.Controllers
             await _context.SaveChangesAsync();
 
             return Ok(new { message = "Project deleted successfully." });
+        }
+
+        // GET COMPLETED PROJECTS - Celebration Wall
+        [HttpGet("completed")]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetCompletedProjects()
+        {
+            var completed = await _context.Projects
+                .Include(p => p.User)
+                .Include(p => p.Milestones)
+                .Where(p => p.Stage == ProjectStage.Completed)
+                .OrderByDescending(p => p.UpdatedAt)
+                .Select(p => new
+                {
+                    p.Id,
+                    p.Title,
+                    p.Description,
+                    p.CreatedAt,
+                    p.UpdatedAt,
+                    DeveloperName = p.User.FullName,
+                    MilestoneCount = p.Milestones.Count
+                })
+                .ToListAsync();
+
+            return Ok(completed);
         }
     }
 }

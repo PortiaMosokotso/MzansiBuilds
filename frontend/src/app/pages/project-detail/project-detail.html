@@ -16,175 +16,152 @@
 
   @if (!loading && !error && project) {
 
-    <div class="detail-container">
-
-      <!-- Back button -->
-      <button class="back-btn" (click)="goBack()">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
-          stroke="currentColor" stroke-width="2">
-          <path d="M19 12H5M12 5l-7 7 7 7"/>
-        </svg>
-        Back to projects
-      </button>
-
-      <!-- Project header -->
-      <div class="project-header">
-        <div class="project-header-left">
-          <div class="header-top">
-            <h1>{{ project.title }}</h1>
-            <span class="stage-badge" [ngClass]="getStageClass(project.stage)">
-              {{ getStageName(project.stage) }}
-            </span>
-          </div>
-          <p class="project-description">{{ project.description }}</p>
-          <div class="project-meta">
-            <div class="avatar">
-              {{ project.developerName?.charAt(0)?.toUpperCase() || '?' }}
-            </div>
-            <span class="developer-name">{{ project.developerName }}</span>
-            <span class="meta-dot">·</span>
-            <span class="date">
-              Started {{ project.createdAt | date: 'dd MMM yyyy' }}
-            </span>
-          </div>
-        </div>
+    <!-- ===== HEADER ===== -->
+    <div class="page-header">
+      <div class="header-left">
+        <button class="back-btn" (click)="goBack()">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2">
+            <path d="M19 12H5M12 5l-7 7 7 7"/>
+          </svg>
+          Back
+        </button>
       </div>
 
-      @if (project.supportRequired) {
-        <div class="support-banner">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
-            stroke="currentColor" stroke-width="2">
-            <circle cx="12" cy="12" r="10"/>
-            <path d="M12 8v4M12 16h.01"/>
-          </svg>
-          <div>
-            <strong>This developer needs support</strong>
-            <p>{{ project.supportDetails }}</p>
+      <div class="header-center">
+        <span class="header-label">Project Milestones Journey</span>
+        <h1 class="header-title">{{ project.title }}</h1>
+      </div>
+
+      <div class="header-right">
+        <span class="stage-badge" [ngClass]="getStageClass(project.stage)">
+          {{ getStageName(project.stage) }}
+        </span>
+
+        @if (isOwner) {
+          <button class="add-btn" (click)="toggleAddMilestone()">
+            @if (addingMilestone) {
+              Cancel
+            } @else {
+              Add Milestone
+            }
+          </button>
+        }
+      </div>
+    </div>
+
+    <!-- ===== ADD MILESTONE FORM ===== -->
+    @if (addingMilestone && isOwner) {
+      <div class="milestone-form-section">
+        <div class="milestone-project-card">
+
+          <div class="header">
+            <img src="Images/MzansiLogo.png" alt="MzansiBuilds Logo" class="logo"/>
+            <div>
+              <h1>Add New Milestone</h1>
+              <p>
+                Share your latest achievement, progress update, or breakthrough
+                in this project journey.
+              </p>
+            </div>
           </div>
-        </div>
-      }
 
-      <!-- Milestones section -->
-      <div class="milestones-section">
-
-        <div class="section-header">
-          <div>
-            <h2>Milestones</h2>
-            <p>Progress updates logged by the developer.</p>
-          </div>
-          @if (isOwner) {
-            <button class="btn-primary" (click)="toggleAddMilestone()">
-              @if (addingMilestone) {
-                Cancel
-              } @else {
-                + Add milestone
-              }
-            </button>
-          }
-        </div>
-
-        <!-- Add milestone form -->
-        @if (addingMilestone && isOwner) {
-          <div class="milestone-form">
-            <h3>New milestone</h3>
-            <div class="field">
-              <label class="field-label">Title</label>
+          <div class="form-row">
+            <label>Milestone Title <span class="required">*</span></label>
+            <div>
               <input
-                class="field-input"
                 type="text"
                 placeholder="What did you achieve?"
                 [(ngModel)]="newMilestone.title"
-                maxlength="120" />
+                maxlength="120"
+              />
             </div>
-            <div class="field">
-              <label class="field-label">Description</label>
+          </div>
+
+          <div class="form-row">
+            <label>Description <span class="required">*</span></label>
+            <div>
               <textarea
-                class="field-textarea"
-                placeholder="Describe what you built or learned..."
+                placeholder="Describe what you built, fixed, learned, or achieved"
                 [(ngModel)]="newMilestone.description"
-                rows="3">
-              </textarea>
-            </div>
-            <div class="form-actions">
-              <button
-                class="btn-secondary"
-                (click)="toggleAddMilestone()">
-                Cancel
-              </button>
-              <button
-                class="btn-primary"
-                (click)="submitMilestone()"
-                [disabled]="savingMilestone ||
-                  !newMilestone.title.trim() ||
-                  !newMilestone.description.trim()">
-                @if (savingMilestone) {
-                  <div class="btn-spinner"></div>
-                  Saving...
-                } @else {
-                  Save milestone
-                }
-              </button>
+                rows="4"
+              ></textarea>
             </div>
           </div>
-        }
 
-        <!-- Timeline -->
-        @if (milestones.length === 0) {
-          <div class="empty-milestones">
-            <svg width="40" height="40" viewBox="0 0 24 24" fill="none"
-              stroke="#333" stroke-width="1.5">
-              <circle cx="12" cy="12" r="10"/>
-              <path d="M12 8v4M12 16h.01"/>
-            </svg>
-            <p>No milestones yet.</p>
-            @if (isOwner) {
-              <span>Add your first milestone to track your progress.</span>
-            }
+          <div class="button-row">
+            <button class="btn-secondary" (click)="toggleAddMilestone()">
+              Cancel
+            </button>
+
+            <button
+              class="btn-primary"
+              (click)="submitMilestone()"
+              [disabled]="savingMilestone ||
+                !newMilestone.title.trim() ||
+                !newMilestone.description.trim()">
+
+              @if (savingMilestone) {
+                Saving...
+              } @else {
+                Save Milestone
+              }
+            </button>
           </div>
-        }
-
-        @if (milestones.length > 0) {
-          <div class="timeline">
-            @for (milestone of milestones; track milestone.id) {
-              <div class="timeline-item">
-                <div class="timeline-left">
-                  <div class="timeline-dot"></div>
-                  <div class="timeline-line"></div>
-                </div>
-                <div class="timeline-content">
-                  <div class="milestone-header">
-                    <h3 class="milestone-title">{{ milestone.title }}</h3>
-                    <div class="milestone-actions">
-                      <span class="milestone-date">
-                        {{ milestone.achievedAt | date: 'dd MMM yyyy' }}
-                      </span>
-                      @if (isOwner) {
-                        <button
-                          class="delete-milestone-btn"
-                          (click)="deleteMilestone(milestone.id)"
-                          title="Delete milestone">
-                          <svg width="12" height="12" viewBox="0 0 24 24"
-                            fill="none" stroke="currentColor" stroke-width="2">
-                            <polyline points="3 6 5 6 21 6"/>
-                            <path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0
-                              01-2-2L5 6"/>
-                          </svg>
-                        </button>
-                      }
-                    </div>
-                  </div>
-                  <p class="milestone-description">
-                    {{ milestone.description }}
-                  </p>
-                </div>
-              </div>
-            }
-          </div>
-        }
-
+        </div>
       </div>
+    }
+
+    <!-- ===== MILESTONE JOURNEY ===== -->
+    <div class="journey-wrap">
+
+      <div class="journey-start">Start</div>
+
+      @if (milestones.length === 0) {
+        <div class="empty-journey">
+          No milestones yet. Start building your journey 🚀
+        </div>
+      }
+
+      @for (milestone of milestones; track milestone.id; let i = $index) {
+        <div class="journey-row" [style.marginTop.px]="i * 35">
+
+          <div class="milestone-card">
+            <div class="milestone-card-label">
+              Milestone {{ i + 1 }}
+            </div>
+
+            <div class="milestone-card-title">
+              {{ milestone.title }}
+            </div>
+
+            <div class="milestone-card-date">
+              {{ milestone.achievedAt | date: 'dd MMM yyyy' }}
+            </div>
+
+            <p class="milestone-card-desc">
+              {{ milestone.description }}
+            </p>
+
+            @if (isOwner) {
+              <button
+                class="delete-milestone-btn"
+                (click)="deleteMilestone(milestone.id)">
+                Delete
+              </button>
+            }
+          </div>
+
+          @if (i < milestones.length - 1) {
+            <div class="journey-line"></div>
+          }
+        </div>
+      }
+
+      @if (project.stage === 3) {
+        <div class="journey-complete">Project Complete </div>
+      }
 
     </div>
   }
-
 </div>

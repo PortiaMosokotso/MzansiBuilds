@@ -18,7 +18,9 @@
   border-radius: 18px;
   padding: 40px;
   color: white;
+  margin-top: -250px;
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.18);
+
 }
 
 .header {
@@ -97,45 +99,87 @@ textarea {
   resize: vertical;
 }
 
-.checkbox-box {
+/* Toggle Row Container */
+.toggle-row {
   display: flex;
   align-items: center;
   gap: 12px;
-  background: #1f2937;
-  color: white;
-  padding: 14px;
-  border-radius: 10px;
-  border: 1px solid #374151;
-  transition: all 0.3s ease;
 }
 
-.checkbox-box:hover {
+.toggle-btn {
+  width: 50px;
+  height: 26px;
+  background: #1f2937; 
+  border-radius: 50px;
+  border: 1px solid #374151;
+  position: relative;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 0;
+}
+
+.toggle-btn:hover {
   border-color: #16a34a;
 }
 
-.checkbox-box input {
-  width: auto;
-  accent-color: #16a34a;
+
+.toggle-knob {
+  width: 22px;
+  height: 22px;
+  background: white;
+  border-radius: 50%;
+  position: absolute;
+  top: 1px;
+  left: 2px;
+  transition: all 0.3s ease;
+}
+
+.toggle-btn.toggle-on {
+  background: #16a34a; 
+  border-color: #16a34a;
+}
+
+.toggle-btn.toggle-on .toggle-knob {
+  transform: translateX(24px); 
+}
+
+.toggle-label {
+  font-size: 14px;
+  color: #d1d5db;
 }
 
 .button-row {
   display: flex;
   justify-content: flex-end;
   margin-top: 30px;
+  gap: 12px;
 }
 
 button {
-  background: #16a34a;
-  color: white;
   padding: 14px 28px;
-  border: none;
   border-radius: 10px;
   cursor: pointer;
   font-weight: 600;
   transition: 0.3s ease;
 }
 
-button:hover {
+.btn-primary {
+  background: #16a34a;
+  color: white;
+  border: none;
+}
+
+.btn-primary:hover {
   background: #15803d;
   transform: translateY(-1px);
+}
+
+.btn-secondary {
+  background: #1f2937;
+  border: 1px solid #374151;
+  color: white;
+}
+
+.btn-secondary:hover {
+  border-color: #16a34a;
 }

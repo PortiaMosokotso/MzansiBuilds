@@ -52,4 +52,8 @@ export class Project {
   deleteProject(id: number) {
     return this.http.delete(`${this.baseUrl}/${id}`, this.getHeaders());
   }
+
+  getCompletedProjects() {
+  return this.http.get(`${this.baseUrl}/completed`, this.getHeaders());
+}
 }

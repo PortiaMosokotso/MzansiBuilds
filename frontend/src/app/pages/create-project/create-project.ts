@@ -34,11 +34,14 @@ export class CreateProject {
     this.projectService.createProject(payload).subscribe({
       next: () => {
         alert('Project created successfully!');
-        this.router.navigate(['/dashboard']);
+        this.router.navigate(['/projects']);
       },
       error: (err) => {
         alert(err.error);
       }
     });
+  }
+   cancel(): void {
+    this.router.navigate(['/projects']);
   }
 }

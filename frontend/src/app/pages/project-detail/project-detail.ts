@@ -108,6 +108,9 @@ export class ProjectDetail implements OnInit {
   getStageClass(stage: number): string {
     return this.stageColors[stage] ?? 'planning';
   }
+getMilestoneColor(index: number): string {
+  return `m-color-${index % 6}`;
+}
 
   toggleAddMilestone(): void {
     this.addingMilestone = !this.addingMilestone;

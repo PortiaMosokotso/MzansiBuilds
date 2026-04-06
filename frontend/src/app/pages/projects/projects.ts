@@ -65,10 +65,16 @@ export class Projects implements OnInit {
       },
     });
   }
-// Navigate to update page
+  
+  goToCreateProject() {
+    this.router.navigate(['/create-project']);}
+
   editProject(projectId: number): void {
     this.router.navigate(['/update-project', projectId]);
   }
+  viewProject(projectId: number): void {
+  this.router.navigate(['/project', projectId]);
+}
   getProjectsByStage(stageKey: number): any[] {
     return this.projects.filter(p => p.stage === stageKey);
   }

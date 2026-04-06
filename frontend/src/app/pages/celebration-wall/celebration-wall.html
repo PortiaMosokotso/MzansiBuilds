@@ -1,1 +1,130 @@
-<p>celebration-wall works!</p>
+<div class="wall-page">
+
+  <!-- ===== HEADER ===== -->
+  <div class="wall-header black-header">
+    <div class="trophy-icon">
+      <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2">
+        <path d="M6 9H4a2 2 0 01-2-2V5a2 2 0 012-2h2"/>
+        <path d="M18 9h2a2 2 0 002-2V5a2 2 0 00-2-2h-2"/>
+        <path d="M6 2h12v7a6 6 0 01-12 0V2z"/>
+        <path d="M12 15v4M8 19h8"/>
+        <path d="M6 2v7M18 2v7"/>
+      </svg>
+    </div>
+
+    <div class="header-text">
+      <h1>Celebration Wall</h1>
+      <p>Developers who built in public and shipped it.</p>
+    </div>
+
+    @if (!loading && !error) {
+      <div class="wall-count">
+        <span class="count-num">{{ projects.length }}</span>
+        <span class="count-label">
+          {{ projects.length === 1 ? 'project' : 'projects' }} completed
+        </span>
+      </div>
+    }
+  </div>
+
+  <!-- ===== LOADING STATE ===== -->
+  @if (loading) {
+    <div class="state-wrap">
+      <div class="spinner"></div>
+      <p>Loading the wall...</p>
+    </div>
+  }
+
+  <!-- ===== ERROR STATE ===== -->
+  @if (!loading && error) {
+    <div class="state-wrap">
+      <p class="error-text">Failed to load. Please try again.</p>
+    </div>
+  }
+
+  <!-- ===== EMPTY STATE ===== -->
+  @if (!loading && !error && projects.length === 0) {
+    <div class="state-wrap">
+      <div class="empty-trophy">
+        <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="#2a2a2a" stroke-width="1">
+          <path d="M6 9H4a2 2 0 01-2-2V5a2 2 0 012-2h2"/>
+          <path d="M18 9h2a2 2 0 002-2V5a2 2 0 00-2-2h-2"/>
+          <path d="M6 2h12v7a6 6 0 01-12 0V2z"/>
+          <path d="M12 15v4M8 19h8"/>
+        </svg>
+      </div>
+      <p class="empty-title">No completed projects yet</p>
+      <p class="empty-sub">
+        Be the first to ship and appear on the wall!
+      </p>
+    </div>
+  }
+
+  <!-- ===== WALL GRID ===== -->
+  @if (!loading && !error && projects.length > 0) {
+    <div class="wall-grid">
+      @for (project of projects; track project.id) {
+        <div class="wall-card" (click)="viewProject(project.id)">
+
+          <!-- Glowing background effect -->
+          <div class="card-glow"></div>
+
+          <!-- Card Top -->
+          <div class="card-top">
+            <div class="dev-avatar">
+              {{ getInitials(project.developerName) }}
+            </div>
+            <div class="completed-badge">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                <polyline points="20 6 9 17 4 12"/>
+              </svg>
+              Completed
+            </div>
+          </div>
+
+          <!-- Card Body -->
+          <div class="card-body">
+            <h3 class="project-name">{{ project.title }}</h3>
+            <p class="project-desc">{{ project.description }}</p>
+          </div>
+
+          <!-- Card Stats -->
+          <div class="card-stats">
+            <div class="stat">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"/>
+                <polyline points="12 6 12 12 16 14"/>
+              </svg>
+              {{ getDuration(project.createdAt, project.updatedAt) }}
+            </div>
+            <div class="stat">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M9 11l3 3L22 4"/>
+                <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/>
+              </svg>
+              {{ project.milestoneCount }}
+              {{ project.milestoneCount === 1 ? 'milestone' : 'milestones' }}
+            </div>
+          </div>
+
+          <!-- Card Footer -->
+          <div class="card-footer">
+            <div class="dev-info">
+              <span class="dev-name">{{ project.developerName }}</span>
+              <span class="ship-date">
+                Shipped {{ project.updatedAt | date: 'dd MMM yyyy' }}
+              </span>
+            </div>
+            <div class="view-arrow">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+            </div>
+          </div>
+
+        </div>
+      }
+    </div>
+  }
+
+</div>

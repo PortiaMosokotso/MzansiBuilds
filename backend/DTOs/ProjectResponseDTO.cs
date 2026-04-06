@@ -10,5 +10,6 @@
         public string? SupportDetails { get; set; }
         public DateTime CreatedAt { get; set; }
         public string DeveloperName { get; set; } = string.Empty;
+        public int UserId { get; set; }
     }
 }
