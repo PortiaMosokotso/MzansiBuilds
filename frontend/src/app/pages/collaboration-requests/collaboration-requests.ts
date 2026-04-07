@@ -47,6 +47,7 @@ export class CollaborationRequests implements OnInit {
       },
     });
   }
+  
 
   acceptRequest(id: number) {
     this.requestService.acceptRequest(id).subscribe(() => {

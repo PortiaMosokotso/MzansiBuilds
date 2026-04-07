@@ -1,0 +1,221 @@
+<div class="feed-page">
+
+  <div class="feed-header">
+  <div class="feed-header-left">
+    <div class="feed-header-icon">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+        stroke="#22c55e" stroke-width="2">
+        <path d="M3 12h18M3 6h18M3 18h12"/>
+      </svg>
+    </div>
+    <div>
+      <h1>Developer Feed</h1>
+      <p>See what the community is building in public.</p>
+    </div>
+  </div>
+
+  <button class="create-feed-btn" (click)="goToCreateProject()">
+    + New Project
+  </button>
+</div>
+
+  @if (loading) {
+    <div class="state-wrap">
+      <div class="spinner"></div>
+      <p>Loading feed...</p>
+    </div>
+  }
+
+  @if (!loading && feedProjects.length === 0) {
+    <div class="state-wrap">
+      <svg width="48" height="48" viewBox="0 0 24 24" fill="none"
+        stroke="#222" stroke-width="1.2">
+        <path d="M3 12h18M3 6h18M3 18h12"/>
+      </svg>
+      <p class="empty-title">Feed is empty</p>
+      <p class="empty-sub">No projects have been shared yet.</p>
+    </div>
+  }
+
+  @if (!loading && feedProjects.length > 0) {
+    <div class="feed-list">
+      @for (project of feedProjects; track project.id) {
+        <div class="feed-card">
+
+          <!-- Card header -->
+          <div class="card-header">
+            <div class="dev-info">
+              <div class="dev-avatar">
+                {{ getInitial(project.developerName) }}
+              </div>
+              <div class="dev-meta">
+                <span class="dev-name">{{ project.developerName }}</span>
+                <span class="dev-label">Developer</span>
+              </div>
+            </div>
+            <div class="card-header-right">
+              <span class="stage-badge" [ngClass]="getStageClass(project.stage)">
+                {{ getStageName(project.stage) }}
+              </span>
+              @if (isMyProject(project)) {
+                <span class="my-project-tag">My project</span>
+              }
+            </div>
+          </div>
+
+          <!-- Project info -->
+          <div class="card-body">
+            <h2 class="project-title">{{ project.title }}</h2>
+            <p class="project-desc">{{ project.description }}</p>
+          </div>
+
+          <!-- Support needed -->
+          @if (project.supportRequired) {
+            <div class="support-banner">
+              <div class="support-banner-left">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="10"/>
+                  <path d="M12 8v4M12 16h.01"/>
+                </svg>
+                <strong>Looking for collaborators</strong>
+              </div>
+              <span class="support-details">{{ project.supportDetails }}</span>
+            </div>
+          }
+
+          <!-- Action bar -->
+          <div class="action-bar">
+
+            <!-- Comment toggle -->
+            <button
+              class="action-btn comment-btn"
+              [class.comment-active]="openComments[project.id]"
+              (click)="toggleComments(project.id)">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2">
+                <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2
+                  2 0 012 2z"/>
+              </svg>
+              {{ getCommentCount(project.id) }}
+              {{ getCommentCount(project.id) === 1 ? 'Comment' : 'Comments' }}
+            </button>
+
+            <!-- Raise hand -->
+            <button
+              class="action-btn raise-hand-btn"
+              [class.hand-raised]="raisedHands[project.id]"
+              [class.hand-mine]="isMyProject(project)"
+              [disabled]="isMyProject(project) || raisedHands[project.id] || raisingHand[project.id]"
+              (click)="raiseHand(project)"
+              [title]="isMyProject(project) ? 'This is your project' :
+                raisedHands[project.id] ? 'Request sent' :
+                'Request to collaborate'">
+
+              @if (raisingHand[project.id]) {
+                <div class="mini-spinner"></div>
+                Sending...
+              } @else if (raisedHands[project.id]) {
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2.5">
+                  <polyline points="20 6 9 17 4 12"/>
+                </svg>
+                Request Sent
+              } @else if (isMyProject(project)) {
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2">
+                  <path d="M18 11V6a2 2 0 00-2-2v0a2 2 0 00-2 2v0M14
+                    10V4a2 2 0 00-2-2v0a2 2 0 00-2 2v0m0 0V3a2 2 0
+                    00-2-2v0a2 2 0 00-2 2v4m0 0v2"/>
+                  <path d="M4 15s-1-1-1-3V9a2 2 0 012-2"/>
+                  <path d="M6 7v8a4 4 0 004 4h4a4 4 0 004-4v-5"/>
+                </svg>
+                Your project
+              } @else {
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2">
+                  <path d="M18 11V6a2 2 0 00-2-2v0a2 2 0 00-2 2v0M14
+                    10V4a2 2 0 00-2-2v0a2 2 0 00-2 2v0m0 0V3a2 2 0
+                    00-2-2v0a2 2 0 00-2 2v4m0 0v2"/>
+                  <path d="M4 15s-1-1-1-3V9a2 2 0 012-2"/>
+                  <path d="M6 7v8a4 4 0 004 4h4a4 4 0 004-4v-5"/>
+                </svg>
+                Raise Hand
+              }
+            </button>
+
+          </div>
+
+          <!-- Comments panel -->
+          @if (openComments[project.id]) {
+            <div class="comments-panel">
+
+              <!-- Existing comments -->
+              @if (comments[project.id]?.length === 0) {
+                <div class="no-comments">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                    stroke="#2a2a2a" stroke-width="1.5">
+                    <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2
+                      2 0 012 2z"/>
+                  </svg>
+                  <span>No comments yet. Be the first!</span>
+                </div>
+              }
+
+              @if (comments[project.id]?.length) {
+                <div class="comments-list">
+                  @for (comment of comments[project.id]; track comment.id) {
+                    <div class="comment-item">
+                      <div class="comment-avatar">
+                        {{ getInitial(comment.developerName) }}
+                      </div>
+                      <div class="comment-body">
+                        <div class="comment-top">
+                          <span class="comment-author">
+                            {{ comment.developerName }}
+                          </span>
+                          <span class="comment-time">
+                            {{ comment.createdAt | date: 'dd MMM, HH:mm' }}
+                          </span>
+                        </div>
+                        <p class="comment-text">{{ comment.content }}</p>
+                      </div>
+                    </div>
+                  }
+                </div>
+              }
+
+              <!-- Add comment input -->
+              <div class="comment-input-row">
+                <div class="input-avatar">
+                  {{ getInitial('Me') }}
+                </div>
+                <div class="input-wrap">
+                  <input
+                    class="comment-input"
+                    type="text"
+                    placeholder="Write a comment..."
+                    [(ngModel)]="newComments[project.id]"
+                    (keyup.enter)="addComment(project.id)" />
+                  <button
+                    class="post-btn"
+                    (click)="addComment(project.id)"
+                    [disabled]="!newComments[project.id]?.trim()">
+                    <svg width="14" height="14" viewBox="0 0 24 24"
+                      fill="none" stroke="currentColor" stroke-width="2.5">
+                      <line x1="22" y1="2" x2="11" y2="13"/>
+                      <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+
+            </div>
+          }
+
+        </div>
+      }
+    </div>
+  }
+
+</div>

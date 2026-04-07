@@ -28,6 +28,9 @@ export class Project {
   getAllProjects() {
     return this.http.get(this.baseUrl, this.getHeaders());
   }
+  getFeed() {
+    return this.http.get(`${this.baseUrl}/feed`, this.getHeaders());
+  }
 
   // GET SINGLE
   getProjectById(id: number) {

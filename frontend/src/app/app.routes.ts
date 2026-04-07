@@ -8,7 +8,8 @@ import { UpdateProject } from './pages/update-project/update-project';
 import { ProjectDetail } from './pages/project-detail/project-detail';
 import { authGuard } from './guards/auth-guard';
 import { CelebrationWall } from './pages/celebration-wall/celebration-wall';
-import { CollaborationRequests} from './pages/collaboration-requests/collaboration-requests'
+import { CollaborationRequests} from './pages/collaboration-requests/collaboration-requests';
+import { Feed } from './pages/feed/feed';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -21,5 +22,6 @@ export const routes: Routes = [
   { path: 'project/:id', component: ProjectDetail, canActivate: [authGuard] },
   { path: 'celebration-wall', component: CelebrationWall },
   { path: 'collaboration-requests', component: CollaborationRequests, canActivate:[authGuard] },
+  { path: 'feed', component: Feed , canActivate: [authGuard] },
 
 ];

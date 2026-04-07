@@ -194,7 +194,8 @@ namespace backend.Controllers
         }
 
         [HttpGet("feed")]
-        public async Task<IActionResult> GetDeveloperFeed()
+        [AllowAnonymous]
+        public async Task<IActionResult> GetFeed()
         {
             var projects = await _context.Projects
                 .Include(p => p.User)

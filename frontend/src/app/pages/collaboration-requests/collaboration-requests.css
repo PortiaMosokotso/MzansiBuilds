@@ -20,7 +20,7 @@
   margin: 0 0 6px;
   font-size: 30px;
   font-weight: 700;
-  color: #15803d; /* dark green title */
+  color: #10b981; /* dark green title */
 }
 
 .page-header p {
@@ -47,7 +47,7 @@
 
 /* DARK GREEN TABLE HEADER */
 .requests-table th {
-  background: #166534;
+  background: #10b981;
   color: white;
   text-align: left;
   padding: 18px;
