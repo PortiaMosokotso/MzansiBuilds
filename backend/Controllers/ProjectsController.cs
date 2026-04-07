@@ -45,8 +45,11 @@ namespace backend.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllProjects()
         {
+            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+
             var projects = await _context.Projects
                 .Include(p => p.User)
+                .Where(p => p.UserId == userId)
                 .OrderByDescending(p => p.CreatedAt)
                 .Select(p => new ProjectResponseDTO
                 {
@@ -69,9 +72,11 @@ namespace backend.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetProjectById(int id)
         {
+            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+
             var project = await _context.Projects
                 .Include(p => p.User)
-                .Where(p => p.Id == id)
+                .Where(p => p.Id == id && p.UserId == userId) 
                 .Select(p => new ProjectResponseDTO
                 {
                     Id = p.Id,
@@ -186,6 +191,29 @@ namespace backend.Controllers
                 .ToListAsync();
 
             return Ok(completed);
+        }
+
+        [HttpGet("feed")]
+        public async Task<IActionResult> GetDeveloperFeed()
+        {
+            var projects = await _context.Projects
+                .Include(p => p.User)
+                .OrderByDescending(p => p.UpdatedAt)
+                .Select(p => new ProjectResponseDTO
+                {
+                    Id = p.Id,
+                    Title = p.Title,
+                    Description = p.Description,
+                    Stage = (int)p.Stage,
+                    SupportRequired = p.SupportRequired,
+                    SupportDetails = p.SupportDetails,
+                    CreatedAt = p.CreatedAt,
+                    DeveloperName = p.User.FullName,
+                    UserId = p.UserId
+                })
+                .ToListAsync();
+
+            return Ok(projects);
         }
     }
 }

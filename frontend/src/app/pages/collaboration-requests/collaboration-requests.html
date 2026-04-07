@@ -1,0 +1,73 @@
+<div class="requests-page">
+  <div class="page-header">
+    <div>
+      <h1>Incoming Collaboration Requests</h1>
+      <p>Review and manage developers requesting access to your projects.</p>
+    </div>
+  </div>
+
+  @if (loading) {
+    <p class="loading-text">Loading requests...</p>
+  } @else {
+    @if (requests.length > 0) {
+      <div class="table-wrapper">
+        <table class="requests-table">
+          <thead>
+            <tr>
+              <th>Developer</th>
+              <th>Project</th>
+              <th>Message</th>
+              <th>Status</th>
+              <th>Requested</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            @for (request of requests; track request.id) {
+              <tr>
+                <td>{{ request.developerName }}</td>
+                <td>{{ request.projectTitle }}</td>
+                <td>{{ request.message }}</td>
+                <td>
+                  <span class="status-badge">
+                    {{ getStatus(request.status) }}
+                  </span>
+                </td>
+                <td>{{ request.createdAt | date:'mediumDate' }}</td>
+                <td>
+                  @if (request.status === 0) {
+                    <div class="action-icons">
+                      <button
+                        class="icon-btn accept"
+                        (click)="acceptRequest(request.id)"
+                        title="Accept"
+                      >
+                        ✓
+                      </button>
+
+                      <button
+                        class="icon-btn decline"
+                        (click)="declineRequest(request.id)"
+                        title="Decline"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                  } @else {
+                    <span class="completed-action">Done</span>
+                  }
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    } @else {
+      <div class="empty-state">
+        <h2>No collaboration requests yet</h2>
+        <p>Requests from developers will appear here.</p>
+      </div>
+    }
+  }
+</div>
