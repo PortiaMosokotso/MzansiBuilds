@@ -1,37 +1,74 @@
-<div class="dashboard-content">
-  <div class="header">
-    <h1>Welcome back 👋</h1>
-    <button (click)="goToCreateProject()">Create Project</button>
+<div class="dashboard-page">
+  <div class="dashboard-header">
+    <div>
+      <h1>Developer Insights</h1>
+      <p>Track your building progress, collaborations, and project momentum.</p>
+    </div>
+
+    <button class="create-btn" (click)="goToCreateProject()">
+      + Create Project
+    </button>
   </div>
 
-  <div class="stats-grid">
-    <div class="stat-card">
-      <h3>12</h3>
-      <p>Projects in progress</p>
-    </div>
-    <div class="stat-card">
-      <h3>5</h3>
-      <p>Milestones achieved today</p>
-    </div>
-    <div class="stat-card">
-      <h3>3</h3>
-      <p>Collaboration requests</p>
-    </div>
-  </div>
+  @if (loading) {
+    <p class="loading-text">Loading dashboard...</p>
+  }
 
-  <section class="feed-section">
-    <h2>Live Feed</h2>
+  @if (!loading) {
+    <div class="cards-grid">
+      <div class="insight-card">
+        <h3>Total Projects</h3>
+        <p>{{ insights.totalProjects }}</p>
+      </div>
 
-    <div class="feed-card">
-      <h3>API Authentication Module</h3>
-      <p>JWT authentication completed and frontend integration started.</p>
-      <span>Stage: In Progress</span>
+      <div class="insight-card">
+        <h3>Active Projects</h3>
+        <p>{{ insights.activeProjects }}</p>
+      </div>
+
+      <div class="insight-card">
+        <h3>Completed</h3>
+        <p>{{ insights.completedProjects }}</p>
+      </div>
+
+      <div class="insight-card">
+        <h3>Pending Requests</h3>
+        <p>{{ insights.pendingRequests }}</p>
+      </div>
+
+      <div class="insight-card">
+        <h3>Milestones</h3>
+        <p>{{ insights.milestoneCount }}</p>
+      </div>
     </div>
 
-    <div class="feed-card">
-      <h3>Frontend Dashboard UI</h3>
-      <p>Sidebar layout completed and project feed cards are next.</p>
-      <span>Stage: Planning</span>
+    <div class="charts-grid">
+      <div class="chart-card">
+        <h2>Project Stages</h2>
+        <canvas baseChart [data]="stageChartData" [type]="doughnutChartType"></canvas>
+      </div>
+
+      <div class="chart-card">
+        <h2>Collaboration Requests</h2>
+        <canvas baseChart [data]="requestChartData" [type]="barChartType"></canvas>
+      </div>
     </div>
-  </section>
+
+    <div class="recent-projects">
+      <div class="section-top">
+        <h2>Recent Projects</h2>
+        <button (click)="goToProjects()">View All</button>
+      </div>
+
+      <div class="recent-list">
+        @for (project of insights.recentProjects; track project.id) {
+          <div class="recent-card">
+            <h3>{{ project.title }}</h3>
+            <p>{{ getStageName(project.stage) }}</p>
+            <span>{{ project.updatedAt | date:'dd MMM yyyy' }}</span>
+          </div>
+        }
+      </div>
+    </div>
+  }
 </div>

@@ -1,24 +1,26 @@
 <div class="feed-page">
 
+  <!-- ===== HEADER ===== -->
   <div class="feed-header">
-  <div class="feed-header-left">
-    <div class="feed-header-icon">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
-        stroke="#22c55e" stroke-width="2">
-        <path d="M3 12h18M3 6h18M3 18h12"/>
-      </svg>
+    <div class="feed-header-left">
+      <div class="feed-header-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none"
+          stroke="#10b981" stroke-width="2">
+          <path d="M3 12h18M3 6h18M3 18h12"/>
+        </svg>
+      </div>
+      <div>
+        <h1>Developer Feed</h1>
+        <p>See what the community is building in public.</p>
+      </div>
     </div>
-    <div>
-      <h1>Developer Feed</h1>
-      <p>See what the community is building in public.</p>
-    </div>
+
+    <button class="create-feed-btn" (click)="goToCreateProject()">
+      + New Project
+    </button>
   </div>
 
-  <button class="create-feed-btn" (click)="goToCreateProject()">
-    + New Project
-  </button>
-</div>
-
+  <!-- ===== LOADING STATE ===== -->
   @if (loading) {
     <div class="state-wrap">
       <div class="spinner"></div>
@@ -26,10 +28,11 @@
     </div>
   }
 
+  <!-- ===== EMPTY STATE ===== -->
   @if (!loading && feedProjects.length === 0) {
     <div class="state-wrap">
       <svg width="48" height="48" viewBox="0 0 24 24" fill="none"
-        stroke="#222" stroke-width="1.2">
+        stroke="#d1d5db" stroke-width="1.2">
         <path d="M3 12h18M3 6h18M3 18h12"/>
       </svg>
       <p class="empty-title">Feed is empty</p>
@@ -37,10 +40,14 @@
     </div>
   }
 
+  <!-- ===== FEED LIST ===== -->
   @if (!loading && feedProjects.length > 0) {
     <div class="feed-list">
       @for (project of feedProjects; track project.id) {
         <div class="feed-card">
+
+          <!-- Green top stripe -->
+          <div class="card-top-stripe"></div>
 
           <!-- Card header -->
           <div class="card-header">
@@ -150,11 +157,10 @@
           @if (openComments[project.id]) {
             <div class="comments-panel">
 
-              <!-- Existing comments -->
               @if (comments[project.id]?.length === 0) {
                 <div class="no-comments">
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
-                    stroke="#2a2a2a" stroke-width="1.5">
+                    stroke="#9ca3af" stroke-width="1.5">
                     <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2
                       2 0 012 2z"/>
                   </svg>

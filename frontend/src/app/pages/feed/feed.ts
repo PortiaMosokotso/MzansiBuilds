@@ -121,7 +121,7 @@ export class Feed implements OnInit {
     if (this.raisedHands[project.id]) return;
 
     this.raisingHand[project.id] = true;
-    const defaultMessage = `Hi! I came across your project "${project.title}" on MzansiBuilds and I would love to collaborate. I think I can contribute meaningfully — please consider my request!`;
+    const defaultMessage = `Hi, I would love to collaborate.`;
 
     this.collaborationService.raiseHand(project.id, defaultMessage).subscribe({
       next: () => {

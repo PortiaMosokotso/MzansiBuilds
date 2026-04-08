@@ -1,6 +1,5 @@
 .projects-page {
   padding: 24px;
-  background: #f3f4f6; /* soft neutral background */
   color: #111827;
   min-height: 100vh;
   font-family: 'Inter', sans-serif;
@@ -11,7 +10,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 16px 24px;
+  padding: 10px 18px;
   border-radius: 16px;
   background: #111827; 
   color: white;
