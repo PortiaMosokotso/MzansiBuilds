@@ -116,6 +116,16 @@ export class Feed implements OnInit {
     });
   }
 
+  deleteComment(projectId: number, commentId: number) {
+  this.commentService.deleteComment(projectId, commentId).subscribe({
+    next: () => {
+      this.comments[projectId] = this.comments[projectId].filter(c => c.id !== commentId);
+      this.cdr.detectChanges();
+    },
+    error: (err) => console.error('Failed to delete comment', err)
+  });
+}
+
   raiseHand(project: any) {
     if (this.isMyProject(project)) return;
     if (this.raisedHands[project.id]) return;

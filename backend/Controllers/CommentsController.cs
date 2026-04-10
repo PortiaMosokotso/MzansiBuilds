@@ -1,5 +1,6 @@
 ﻿using backend.Data;
 using backend.Models;
+using backend.DTOs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
@@ -31,6 +32,7 @@ namespace backend.Controllers
                     c.Id,
                     c.Content,
                     c.CreatedAt,
+                    c.UserId,
                     UserName = c.User.FullName
                 })
                 .ToListAsync();
@@ -39,21 +41,37 @@ namespace backend.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddComment(int projectId, [FromBody] string content)
+        public async Task<IActionResult> AddComment(int projectId, [FromBody] AddCommentDTO dto)
         {
             var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
-
             var comment = new Comment
             {
                 ProjectId = projectId,
                 UserId = userId,
-                Content = content
+                Content = dto.Content 
             };
-
             _context.Comments.Add(comment);
             await _context.SaveChangesAsync();
-
             return Ok(new { message = "Comment added successfully." });
+        }
+
+        [HttpDelete("{commentId}")]
+        public async Task<IActionResult> DeleteComment(int projectId, int commentId)
+        {
+            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+
+            var comment = await _context.Comments
+                .FirstOrDefaultAsync(c => c.Id == commentId && c.ProjectId == projectId);
+
+            if (comment == null)
+                return NotFound(new { message = "Comment not found." });
+
+            if (comment.UserId != userId)
+                return Forbid();
+
+            _context.Comments.Remove(comment);
+            await _context.SaveChangesAsync();
+            return Ok(new { message = "Comment deleted successfully." });
         }
     }
 }
