@@ -1,12 +1,13 @@
 import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { Router, RouterLink} from '@angular/router';
+import { FormsModule, NgForm } from '@angular/forms';
+import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [FormsModule, RouterLink],
+  imports: [FormsModule, RouterLink, CommonModule],
   templateUrl: './register.html',
   styleUrl: './register.css',
 })
@@ -14,13 +15,24 @@ export class Register {
   fullName = '';
   email = '';
   password = '';
+  isLoading = false;
+  errorMessage = '';
 
   constructor(
     private authService: AuthService,
     private router: Router
   ) {}
 
-  register() {
+  register(form: NgForm) {
+    this.errorMessage = '';
+
+    if (form.invalid) {
+      form.control.markAllAsTouched();
+      return;
+    }
+
+    this.isLoading = true;
+
     const payload = {
       fullName: this.fullName,
       email: this.email,
@@ -32,7 +44,8 @@ export class Register {
         this.router.navigate(['/']);
       },
       error: (err) => {
-        alert(err.error);
+        this.isLoading = false;
+        this.errorMessage = err.error?.message || 'Registration failed. Please try again.';
       }
     });
   }

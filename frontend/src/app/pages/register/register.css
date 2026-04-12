@@ -105,3 +105,23 @@ button:hover {
 .login-link a:hover {
   text-decoration: underline;
 }
+
+.input-error {
+  border-color: #e53e3e !important;
+}
+
+.error-msg {
+  color: #e53e3e;
+  font-size: 0.8rem;
+  margin-top: 4px;
+}
+
+.server-error {
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
