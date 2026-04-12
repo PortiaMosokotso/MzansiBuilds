@@ -7,7 +7,7 @@
     </div>
   }
 
-  @if (!loading && error) {
+  @if (!loading && error && !project) {
     <div class="state-wrap">
       <p class="error-text">Failed to load project. Please go back and try again.</p>
       <button class="btn-secondary" (click)="cancel()">Go back</button>
@@ -17,7 +17,7 @@
   @if (!loading && !error && project) {
     <div class="project-card">
 
-      <!-- Header with logo -->
+      <!-- Header -->
       <div class="header">
         <img src="Images/MzansiLogo.png" alt="Mzansi Builds" class="logo"/>
         <div>
@@ -26,7 +26,7 @@
         </div>
       </div>
 
-      <!-- Success message -->
+      <!-- Success banner -->
       @if (successMessage) {
         <div class="success-banner">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -37,71 +37,152 @@
         </div>
       }
 
-      <!-- Form fields -->
-      <div class="form-row">
-        <label>Project title <span class="required">*</span></label>
-        <div>
-          <input type="text" placeholder="What are you building?" [(ngModel)]="project.title" maxlength="200"/>
-          <span class="char-count">{{ project.title?.length || 0 }}/200</span>
-        </div>
-      </div>
+      <form #updateForm="ngForm" (ngSubmit)="saveProject(updateForm)" novalidate>
 
-      <div class="form-row">
-        <label>Description <span class="required">*</span></label>
-        <div>
-          <textarea placeholder="Describe your project..." [(ngModel)]="project.description" rows="4"></textarea>
-        </div>
-      </div>
-
-      <div class="form-row">
-        <label>Current stage</label>
-        <div class="stage-options">
-          @for (stage of stages; track stage.key) {
-            <button
-              class="stage-option"
-              [class.stage-active]="project.stage === stage.key"
-              (click)="project.stage = stage.key">
-              {{ stage.label }}
-            </button>
-          }
-        </div>
-      </div>
-
-      <div class="form-row">
-        <label>Support needed?</label>
-        <div class="toggle-row">
-          <button class="toggle-btn" [class.toggle-on]="project.supportRequired" (click)="project.supportRequired = !project.supportRequired">
-            <span class="toggle-knob"></span>
-          </button>
-          <span class="toggle-label">
-            {{ project.supportRequired ? 'Yes, I need collaborators' : 'No support needed' }}
-          </span>
-        </div>
-      </div>
-
-      @if (project.supportRequired) {
+        <!-- Project Title -->
         <div class="form-row">
-          <label>What kind of support?</label>
+          <label for="title">Project title <span class="required">*</span></label>
           <div>
-            <textarea placeholder="Describe what help you need..." [(ngModel)]="project.supportDetails" rows="3"></textarea>
+            <input
+              id="title"
+              name="title"
+              type="text"
+              placeholder="What are you building?"
+              [(ngModel)]="project.title"
+              #titleRef="ngModel"
+              required
+              minlength="3"
+              maxlength="200"
+              [class.input-error]="titleRef.invalid && titleRef.touched"
+            />
+            <div class="char-count-row">
+              <div class="error-msg" *ngIf="titleRef.invalid && titleRef.touched">
+                <span *ngIf="titleRef.errors?.['required']">Project title is required.</span>
+                <span *ngIf="titleRef.errors?.['minlength']">Title must be at least 3 characters.</span>
+              </div>
+              <span class="char-count" [class.char-warn]="project.title?.length > 180">
+                {{ project.title?.length || 0 }}/200
+              </span>
+            </div>
           </div>
         </div>
-      }
 
-      <!-- Actions -->
-      <div class="button-row">
-        <button class="btn-secondary" (click)="cancel()" [disabled]="saving">Cancel</button>
-        <button class="btn-primary" (click)="saveProject()" [disabled]="saving || !project.title?.trim() || !project.description?.trim()">
-          @if (saving) {
-            <div class="btn-spinner"></div>
-            Saving...
-          } @else {
-            Save changes
-          }
-        </button>
-      </div>
+        <!-- Description -->
+        <div class="form-row">
+          <label for="description">Description <span class="required">*</span></label>
+          <div>
+            <textarea
+              id="description"
+              name="description"
+              placeholder="Describe your project..."
+              [(ngModel)]="project.description"
+              #descRef="ngModel"
+              required
+              minlength="10"
+              maxlength="500"
+              rows="4"
+              [class.input-error]="descRef.invalid && descRef.touched"
+            ></textarea>
+            <div class="char-count-row">
+              <div class="error-msg" *ngIf="descRef.invalid && descRef.touched">
+                <span *ngIf="descRef.errors?.['required']">Description is required.</span>
+                <span *ngIf="descRef.errors?.['minlength']">Description must be at least 10 characters.</span>
+              </div>
+              <span class="char-count" [class.char-warn]="project.description?.length > 450">
+                {{ project.description?.length || 0 }}/500
+              </span>
+            </div>
+          </div>
+        </div>
 
+        <!-- Project Stage -->
+        <div class="form-row">
+          <label>Current stage</label>
+          <div class="stage-options">
+            @for (stage of stages; track stage.key) {
+              <button
+                type="button"
+                class="stage-option"
+                [class.stage-active]="project.stage === stage.key"
+                (click)="project.stage = stage.key"
+              >
+                {{ stage.label }}
+              </button>
+            }
+          </div>
+        </div>
+
+        <!-- Support Toggle -->
+        <div class="form-row">
+          <label>Support needed?</label>
+          <div class="toggle-row">
+            <button
+              type="button"
+              class="toggle-btn"
+              [class.toggle-on]="project.supportRequired"
+              (click)="project.supportRequired = !project.supportRequired"
+            >
+              <span class="toggle-knob"></span>
+            </button>
+            <span class="toggle-label">
+              {{ project.supportRequired ? 'Yes, I need collaborators' : 'No support needed' }}
+            </span>
+          </div>
+        </div>
+
+        <!-- Support Details (Conditional) -->
+        @if (project.supportRequired) {
+          <div class="form-row">
+            <label for="supportDetails">
+              What kind of support? <span class="required">*</span>
+            </label>
+            <div>
+              <textarea
+                id="supportDetails"
+                name="supportDetails"
+                placeholder="Describe what help you need..."
+                [(ngModel)]="project.supportDetails"
+                #supportRef="ngModel"
+                required
+                minlength="10"
+                maxlength="300"
+                rows="3"
+                [class.input-error]="supportRef.invalid && supportRef.touched"
+              ></textarea>
+              <div class="char-count-row">
+                <div class="error-msg" *ngIf="supportRef.invalid && supportRef.touched">
+                  <span *ngIf="supportRef.errors?.['required']">Please describe the support you need.</span>
+                  <span *ngIf="supportRef.errors?.['minlength']">Support details must be at least 10 characters.</span>
+                </div>
+                <span class="char-count" [class.char-warn]="project.supportDetails?.length > 270">
+                  {{ project.supportDetails?.length || 0 }}/300
+                </span>
+              </div>
+            </div>
+          </div>
+        }
+
+        <!-- Server error -->
+        <div class="error-msg server-error" *ngIf="errorMessage">
+          {{ errorMessage }}
+        </div>
+
+        <!-- Actions -->
+        <div class="button-row">
+          <button type="button" class="btn-secondary" (click)="cancel()" [disabled]="saving">
+            Cancel
+          </button>
+          <button type="submit" class="btn-primary" [disabled]="saving">
+            @if (saving) {
+              <div class="btn-spinner"></div>
+              Saving...
+            } @else {
+              Save changes
+            }
+          </button>
+        </div>
+
+      </form>
     </div>
   }
-
 </div>

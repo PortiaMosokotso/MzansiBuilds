@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgForm } from '@angular/forms';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { Project } from '../../services/project';
 import { Subscription, filter } from 'rxjs';
@@ -17,6 +17,7 @@ export class UpdateProject implements OnInit, OnDestroy {
   loading = true;
   saving = false;
   error = false;
+  errorMessage = '';
   successMessage = '';
   project: any = null;
 
@@ -37,7 +38,6 @@ export class UpdateProject implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    // Listen to route param changes — fires every time including revisits
     const paramSub = this.route.paramMap.subscribe(params => {
       const id = params.get('id');
       if (!id || isNaN(Number(id))) {
@@ -51,7 +51,6 @@ export class UpdateProject implements OnInit, OnDestroy {
       this.loadProject();
     });
 
-    // Also listen to router NavigationEnd to catch same-route revisits
     const navSub = this.router.events
       .pipe(filter(e => e instanceof NavigationEnd))
       .subscribe(() => {
@@ -70,6 +69,7 @@ export class UpdateProject implements OnInit, OnDestroy {
     this.project = null;
     this.loading = true;
     this.error = false;
+    this.errorMessage = '';
     this.saving = false;
     this.successMessage = '';
     this.cdr.detectChanges();
@@ -78,7 +78,6 @@ export class UpdateProject implements OnInit, OnDestroy {
   loadProject(): void {
     this.projectService.getProjectById(this.projectId).subscribe({
       next: (response: any) => {
-        console.log('Project loaded:', response);
         this.project = {
           title: response.title,
           description: response.description,
@@ -98,8 +97,14 @@ export class UpdateProject implements OnInit, OnDestroy {
     });
   }
 
-  saveProject(): void {
-    if (!this.project?.title?.trim() || !this.project?.description?.trim()) return;
+  saveProject(form: NgForm): void {
+    this.errorMessage = '';
+
+    if (form.invalid) {
+      form.control.markAllAsTouched();
+      this.cdr.detectChanges();
+      return;
+    }
 
     this.saving = true;
     this.successMessage = '';
@@ -115,7 +120,7 @@ export class UpdateProject implements OnInit, OnDestroy {
       error: (err) => {
         console.error('Failed to update project:', err);
         this.saving = false;
-        this.error = true;
+        this.errorMessage = err.error?.message || 'Failed to update project. Please try again.';
         this.cdr.detectChanges();
       },
     });

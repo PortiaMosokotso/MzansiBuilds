@@ -1,12 +1,13 @@
 import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Project } from '../../services/project';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-create-project',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, CommonModule],
   templateUrl: './create-project.html',
   styleUrl: './create-project.css',
 })
@@ -16,13 +17,23 @@ export class CreateProject {
   stage = 0;
   supportRequired = false;
   supportDetails = '';
+  isLoading = false;
+  errorMessage = '';
 
   constructor(
     private projectService: Project,
     private router: Router
   ) {}
 
-  createProject() {
+  createProject(form: NgForm) {
+    this.errorMessage = '';
+
+    if (form.invalid) {
+      form.control.markAllAsTouched();
+      return;
+    }
+
+    this.isLoading = true;
     const payload = {
       title: this.title,
       description: this.description,
@@ -33,15 +44,17 @@ export class CreateProject {
 
     this.projectService.createProject(payload).subscribe({
       next: () => {
-        alert('Project created successfully!');
+        this.isLoading = false;
         this.router.navigate(['/projects']);
       },
       error: (err) => {
-        alert(err.error);
+        this.isLoading = false;
+        this.errorMessage = err.error?.message || 'Failed to create project. Please try again.';
       }
     });
   }
-   cancel(): void {
+
+  cancel(): void {
     this.router.navigate(['/projects']);
   }
 }

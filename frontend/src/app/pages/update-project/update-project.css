@@ -180,3 +180,37 @@ button:hover {
 .btn-secondary:hover {
   border-color: #16a34a;
 }
+
+.input-error {
+  border-color: #e53e3e !important;
+}
+
+.error-msg {
+  color: #e53e3e;
+  font-size: 0.8rem;
+  margin-top: 4px;
+}
+
+.server-error {
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+.char-count-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  min-height: 1.2rem;
+}
+
+.char-count {
+  font-size: 0.75rem;
+  color: #888;
+  text-align: right;
+  white-space: nowrap;
+  margin-left: auto;
+}
+
+.char-warn {
+  color: #e53e3e;
+}

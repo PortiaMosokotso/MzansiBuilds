@@ -1,8 +1,7 @@
 <div class="create-project-page">
-
   <div class="project-card">
 
-    <!-- Header with logo -->
+    <!-- Header -->
     <div class="header">
       <img src="Images/MzansiLogo.png" alt="MzansiBuilds Logo" class="logo"/>
       <div>
@@ -11,81 +10,144 @@
       </div>
     </div>
 
-    <!-- Project Title -->
-    <div class="form-row">
-      <label>Project Title <span class="required">*</span></label>
-      <div>
-        <input
-          type="text"
-          placeholder="Enter project title"
-          [(ngModel)]="title"
-        />
-      </div>
-    </div>
+    <form #projectForm="ngForm" (ngSubmit)="createProject(projectForm)" novalidate>
 
-    <!-- Description -->
-    <div class="form-row">
-      <label>Description <span class="required">*</span></label>
-      <div>
-        <textarea
-          placeholder="Describe what you're building"
-          [(ngModel)]="description"
-          rows="4"
-        ></textarea>
-      </div>
-    </div>
-
-    <!-- Project Stage -->
-    <div class="form-row">
-      <label>Project Stage <span class="required">*</span></label>
-      <div>
-        <select [(ngModel)]="stage" (ngModelChange)="stage = +$event">
-          <option [value]="0">Planning</option>
-          <option [value]="1">In Progress</option>
-          <option [value]="2">Testing</option>
-          <option [value]="3">Completed</option>
-        </select>
-      </div>
-    </div>
-
-    <!-- Support Required (Toggle) -->
-    <div class="form-row">
-      <label>Support Required?</label>
-      <div class="toggle-row">
-        <button
-          class="toggle-btn"
-          [class.toggle-on]="supportRequired"
-          (click)="supportRequired = !supportRequired"
-        >
-          <span class="toggle-knob"></span>
-        </button>
-        <span class="toggle-label">
-          {{ supportRequired ? 'Yes, I need collaborators' : 'No support needed' }}
-        </span>
-      </div>
-    </div>
-
-    <!-- Support Details (Conditional) -->
-    @if (supportRequired) {
+      <!-- Project Title -->
       <div class="form-row">
-        <label>Support Details</label>
+        <label for="title">Project Title <span class="required">*</span></label>
         <div>
-          <textarea
-            placeholder="Explain the support needed"
-            [(ngModel)]="supportDetails"
-            rows="3"
-          ></textarea>
+          <input
+            id="title"
+            name="title"
+            type="text"
+            placeholder="Enter project title"
+            [(ngModel)]="title"
+            #titleRef="ngModel"
+            required
+            minlength="3"
+            maxlength="100"
+            [class.input-error]="titleRef.invalid && titleRef.touched"
+          />
+          <div class="error-msg" *ngIf="titleRef.invalid && titleRef.touched">
+            <span *ngIf="titleRef.errors?.['required']">Project title is required.</span>
+            <span *ngIf="titleRef.errors?.['minlength']">Title must be at least 3 characters.</span>
+            <span *ngIf="titleRef.errors?.['maxlength']">Title cannot exceed 100 characters.</span>
+          </div>
+          <div class="char-count" [class.char-warn]="title.length > 90">
+            {{ title.length }}/100
+          </div>
         </div>
       </div>
-    }
 
-    <!-- Buttons -->
-    <div class="button-row">
-      <button class="btn-secondary" (click)="cancel()">Cancel</button>
-      <button class="btn-primary" (click)="createProject()">Create Project</button>
-   
-    </div>
+      <!-- Description -->
+      <div class="form-row">
+        <label for="description">Description <span class="required">*</span></label>
+        <div>
+          <textarea
+            id="description"
+            name="description"
+            placeholder="Describe what you're building"
+            [(ngModel)]="description"
+            #descRef="ngModel"
+            required
+            minlength="10"
+            maxlength="500"
+            rows="4"
+            [class.input-error]="descRef.invalid && descRef.touched"
+          ></textarea>
+          <div class="error-msg" *ngIf="descRef.invalid && descRef.touched">
+            <span *ngIf="descRef.errors?.['required']">Description is required.</span>
+            <span *ngIf="descRef.errors?.['minlength']">Description must be at least 10 characters.</span>
+            <span *ngIf="descRef.errors?.['maxlength']">Description cannot exceed 500 characters.</span>
+          </div>
+          <div class="char-count" [class.char-warn]="description.length > 450">
+            {{ description.length }}/500
+          </div>
+        </div>
+      </div>
 
+      <!-- Project Stage -->
+      <div class="form-row">
+        <label for="stage">Project Stage <span class="required">*</span></label>
+        <div>
+          <select
+            id="stage"
+            name="stage"
+            [(ngModel)]="stage"
+            #stageRef="ngModel"
+            required
+            (ngModelChange)="stage = +$event"
+          >
+            <option [value]="0">Planning</option>
+            <option [value]="1">In Progress</option>
+            <option [value]="2">Testing</option>
+            <option [value]="3">Completed</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Support Required Toggle -->
+      <div class="form-row">
+        <label>Support Required?</label>
+        <div class="toggle-row">
+          <button
+            type="button"
+            class="toggle-btn"
+            [class.toggle-on]="supportRequired"
+            (click)="supportRequired = !supportRequired"
+          >
+            <span class="toggle-knob"></span>
+          </button>
+          <span class="toggle-label">
+            {{ supportRequired ? 'Yes, I need collaborators' : 'No support needed' }}
+          </span>
+        </div>
+      </div>
+
+      <!-- Support Details (Conditional) -->
+      @if (supportRequired) {
+        <div class="form-row">
+          <label for="supportDetails">
+            Support Details <span class="required">*</span>
+          </label>
+          <div>
+            <textarea
+              id="supportDetails"
+              name="supportDetails"
+              placeholder="Explain the support needed"
+              [(ngModel)]="supportDetails"
+              #supportRef="ngModel"
+              rows="3"
+              required
+              minlength="10"
+              maxlength="300"
+              [class.input-error]="supportRef.invalid && supportRef.touched"
+            ></textarea>
+            <div class="error-msg" *ngIf="supportRef.invalid && supportRef.touched">
+              <span *ngIf="supportRef.errors?.['required']">Please describe the support you need.</span>
+              <span *ngIf="supportRef.errors?.['minlength']">Support details must be at least 10 characters.</span>
+              <span *ngIf="supportRef.errors?.['maxlength']">Support details cannot exceed 300 characters.</span>
+            </div>
+            <div class="char-count" [class.char-warn]="supportDetails.length > 270">
+              {{ supportDetails.length }}/300
+            </div>
+          </div>
+        </div>
+      }
+
+      <!-- Server Error -->
+      <div class="error-msg server-error" *ngIf="errorMessage">
+        {{ errorMessage }}
+      </div>
+
+      <!-- Buttons -->
+      <div class="button-row">
+        <button type="button" class="btn-secondary" (click)="cancel()">Cancel</button>
+        <button type="submit" class="btn-primary" [disabled]="isLoading">
+          {{ isLoading ? 'Creating...' : 'Create Project' }}
+        </button>
+      </div>
+
+    </form>
   </div>
-
 </div>

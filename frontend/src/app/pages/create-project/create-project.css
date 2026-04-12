@@ -183,3 +183,35 @@ button {
 .btn-secondary:hover {
   border-color: #16a34a;
 }
+
+
+.input-error {
+  border-color: #e53e3e !important;
+}
+
+.error-msg {
+  color: #e53e3e;
+  font-size: 0.8rem;
+  margin-top: 4px;
+}
+
+.server-error {
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+.char-count {
+  font-size: 0.75rem;
+  color: #888;
+  text-align: right;
+  margin-top: 2px;
+}
+
+.char-warn {
+  color: #e53e3e;
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}

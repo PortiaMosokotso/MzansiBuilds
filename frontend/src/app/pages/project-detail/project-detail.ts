@@ -156,7 +156,7 @@ getMilestoneColor(index: number): string {
       });
   }
 
-  goBack(): void {
-    this.router.navigate(['/projects']);
-  }
+ goBack(): void {
+  window.history.back();
+}
 }
