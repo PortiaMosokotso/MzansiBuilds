@@ -107,22 +107,32 @@ button:hover {
   text-decoration: underline;
 }
 
-.input-error {
-  border-color: #e53e3e !important;
+/* ERROR TEXT */
+.error {
+  color: #e74c3c;
+  font-size: 12px;
+  margin-top: 5px;
+  display: block;
 }
 
-.error-msg {
-  color: #e53e3e;
-  font-size: 0.8rem;
-  margin-top: 4px;
+/* DEFAULT INPUT STYLE */
+input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  outline: none;
+  transition: 0.2s ease-in-out;
 }
 
-.server-error {
-  text-align: center;
-  margin-bottom: 8px;
+/* RED BORDER WHEN INVALID */
+input.invalid {
+  border: 1px solid #e74c3c;
+  box-shadow: 0 0 3px rgba(231, 76, 60, 0.4);
 }
 
-button:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
+/* OPTIONAL: focus style */
+input:focus {
+  border-color: #3498db;
+  box-shadow: 0 0 3px rgba(52, 152, 219, 0.4);
 }
