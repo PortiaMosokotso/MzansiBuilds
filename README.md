@@ -1,6 +1,7 @@
 # MzansiBuilds
 
-A platform that helps developers build in public and keep up with what other developers are building. 
+A platform that helps developers build in public and keep up with what other developers are building.
+ Video Link of how the system works: https://youtu.be/Yymfbig1mXQ 
 
 ---
 
