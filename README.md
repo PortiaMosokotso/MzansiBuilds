@@ -64,12 +64,6 @@ Open `appsettings.json` and update the connection string to match your local SQL
   "ConnectionStrings": {
     "DefaultConnection": "Server=localhost;Database=MzansiBuildsDb;Trusted_Connection=True;TrustServerCertificate=True;"
   },
-  "Jwt": {
-    "Key": "MzansiBuilds_SuperSecret_Key_2026!@#$%",
-    "Issuer": "MzansiBuildsAPI",
-    "Audience": "MzansiBuildsClient",
-    "ExpiresInDays": "7"
-  }
 }
 ```
 
